@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "scriptforge.fullname" . }}-api
+spec:
+  replicas: {{ .Values.api.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "scriptforge.name" . }}
+      component: api
+  template:
+    metadata:
+      labels:
+        app: {{ include "scriptforge.name" . }}
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          args: ["--mode=api"]
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: {{ include "scriptforge.fullname" . }}-config
+            - secretRef:
+                name: {{ include "scriptforge.fullname" . }}-secret
+          env:
+            - name: SCRIPTFORGE_MODE
+              value: "api"
+          livenessProbe:
+            httpGet: { path: /healthz, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: /readyz, port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          startupProbe:
+            httpGet: { path: /startupz, port: 8080 }
+            failureThreshold: 30
+            periodSeconds: 2
+          resources:
+            {{- toYaml .Values.api.resources | nindent 12 }}

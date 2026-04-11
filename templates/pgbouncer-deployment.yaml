@@ -1,0 +1,37 @@
+{{- if .Values.pgbouncer.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "scriptforge.fullname" . }}-pgbouncer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "scriptforge.name" . }}
+      component: pgbouncer
+  template:
+    metadata:
+      labels:
+        app: {{ include "scriptforge.name" . }}
+        component: pgbouncer
+    spec:
+      containers:
+        - name: pgbouncer
+          image: edoburu/pgbouncer:1.22.0
+          ports: [{ containerPort: 5432 }]
+          env:
+            - { name: DATABASE_URL, value: "postgres://scriptforge:scriptforge@{{ include "scriptforge.fullname" . }}-postgres:5432/scriptforge" }
+            - { name: POOL_MODE, value: transaction }
+            - { name: DEFAULT_POOL_SIZE, value: "{{ .Values.pgbouncer.poolSize }}" }
+            - { name: MAX_CLIENT_CONN, value: "{{ .Values.pgbouncer.maxClientConn }}" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "scriptforge.fullname" . }}-pgbouncer
+spec:
+  selector:
+    app: {{ include "scriptforge.name" . }}
+    component: pgbouncer
+  ports: [{ port: 5432 }]
+{{- end }}

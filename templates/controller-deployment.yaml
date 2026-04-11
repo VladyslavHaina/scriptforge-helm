@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "scriptforge.fullname" . }}-controller
+spec:
+  replicas: {{ .Values.controller.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "scriptforge.name" . }}
+      component: controller
+  template:
+    metadata:
+      labels:
+        app: {{ include "scriptforge.name" . }}
+        component: controller
+    spec:
+      serviceAccountName: {{ include "scriptforge.fullname" . }}-controller
+      containers:
+        - name: controller
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          args: ["--mode=controller"]
+          envFrom:
+            - configMapRef:
+                name: {{ include "scriptforge.fullname" . }}-config
+            - secretRef:
+                name: {{ include "scriptforge.fullname" . }}-secret
+          livenessProbe:
+            httpGet: { path: /healthz, port: 8080 }
+          resources:
+            {{- toYaml .Values.controller.resources | nindent 12 }}

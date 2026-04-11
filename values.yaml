@@ -1,0 +1,67 @@
+image:
+  repository: vladyslavhaina/scriptforge
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+api:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: "1"
+      memory: 512Mi
+
+controller:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: "1"
+      memory: 512Mi
+
+postgres:
+  enabled: true
+  storage: 10Gi
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+  externalUrl: ""
+
+pgbouncer:
+  enabled: true
+  poolSize: 20
+  maxClientConn: 100
+
+ingress:
+  enabled: true
+  className: nginx
+  host: scriptforge.local
+  annotations: {}
+
+runtimeImages:
+  bash: "alpine:3.21"
+  python: "python:3.13-alpine"
+  terraform: "hashicorp/terraform:1.10"
+  powershell: "mcr.microsoft.com/powershell:7.5-alpine-3.20"
+  ansible: "alpine:3.21"
+
+execution:
+  podNamespace: scriptforge-exec
+
+monitoring:
+  enabled: false
+  serviceMonitor: false
+
+encryption:
+  key: ""
+
+nameOverride: ""
+fullnameOverride: ""

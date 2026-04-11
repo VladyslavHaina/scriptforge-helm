@@ -1,0 +1,39 @@
+api:
+  replicas: 3
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: "2"
+      memory: 1Gi
+
+controller:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: "2"
+      memory: 1Gi
+
+postgres:
+  enabled: true
+  storage: 50Gi
+  resources:
+    requests:
+      cpu: "1"
+      memory: 1Gi
+    limits:
+      cpu: "4"
+      memory: 4Gi
+
+pgbouncer:
+  enabled: true
+  poolSize: 40
+  maxClientConn: 200
+
+monitoring:
+  enabled: true
+  serviceMonitor: true

@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "scriptforge.fullname" . }}-executor
+  namespace: {{ .Values.execution.podNamespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "scriptforge.fullname" . }}-controller
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ include "scriptforge.fullname" . }}-executor
+  apiGroup: rbac.authorization.k8s.io

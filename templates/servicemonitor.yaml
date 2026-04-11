@@ -1,0 +1,15 @@
+{{- if and .Values.monitoring.enabled .Values.monitoring.serviceMonitor }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "scriptforge.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "scriptforge.name" . }}
+      component: api
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+{{- end }}
