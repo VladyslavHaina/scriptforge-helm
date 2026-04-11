@@ -45,6 +45,8 @@ ingress:
   className: nginx
   host: scriptforge.local
   annotations: {}
+  tls: []
+  certIssuer: ""
 
 runtimeImages:
   bash: "alpine:3.21"
