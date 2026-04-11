@@ -63,5 +63,12 @@ monitoring:
 encryption:
   key: ""
 
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 20
+  cooldownPeriod: 300
+  queueThreshold: 10
+
 nameOverride: ""
 fullnameOverride: ""

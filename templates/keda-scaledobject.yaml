@@ -1,0 +1,19 @@
+{{- if .Values.autoscaling.enabled }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "scriptforge.fullname" . }}-controller
+spec:
+  scaleTargetRef:
+    name: {{ include "scriptforge.fullname" . }}-controller
+  minReplicaCount: {{ .Values.autoscaling.minReplicas | default 1 }}
+  maxReplicaCount: {{ .Values.autoscaling.maxReplicas | default 20 }}
+  cooldownPeriod: {{ .Values.autoscaling.cooldownPeriod | default 300 }}
+  triggers:
+    - type: postgresql
+      metadata:
+        connectionFromEnv: SCRIPTFORGE_DATABASE_URL
+        query: "SELECT COUNT(*) FROM river_job WHERE state = 'available'"
+        targetQueryValue: "{{ .Values.autoscaling.queueThreshold | default 10 }}"
+        activationTargetQueryValue: "1"
+{{- end }}

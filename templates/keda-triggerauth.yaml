@@ -1,0 +1,11 @@
+{{- if .Values.autoscaling.enabled }}
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: {{ include "scriptforge.fullname" . }}-pg-auth
+spec:
+  secretTargetRef:
+    - parameter: connection
+      name: {{ include "scriptforge.fullname" . }}-secret
+      key: SCRIPTFORGE_DATABASE_URL
+{{- end }}

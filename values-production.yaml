@@ -34,6 +34,12 @@ pgbouncer:
   poolSize: 40
   maxClientConn: 200
 
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 50
+  queueThreshold: 5
+
 monitoring:
   enabled: true
   serviceMonitor: true
