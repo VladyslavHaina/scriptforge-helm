@@ -1,4 +1,4 @@
-{{- if .Values.execution.networkPolicy.enabled }}
+{{- if (.Values.execution.networkPolicy).enabled }}
 # Default-deny egress to cloud metadata endpoints for execution pods so a user
 # script cannot SSRF the instance metadata service for IAM credentials
 # (SF-SANDBOX-03). All other egress (incl. DNS + internet for scripts that are
