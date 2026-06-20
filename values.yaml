@@ -1,6 +1,6 @@
 image:
   repository: vladyslavhaina/scriptforge
-  tag: "2.1.1"
+  tag: "2.2.0"
   pullPolicy: IfNotPresent
 
 api:
@@ -64,6 +64,10 @@ monitoring:
 
 encryption:
   key: ""
+
+# JWT signing secret — MUST be distinct from encryption.key (SF-AUTH-02).
+# Supply on upgrade: --set jwtSecret="$(openssl rand -hex 32)"
+jwtSecret: ""
 
 autoscaling:
   enabled: false
