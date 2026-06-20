@@ -57,6 +57,10 @@ runtimeImages:
 
 execution:
   podNamespace: scriptforge-exec
+  # Default-deny egress to cloud metadata for execution pods (SF-SANDBOX-03).
+  # Only enforced by a NetworkPolicy-capable CNI; harmless no-op otherwise.
+  networkPolicy:
+    enabled: true
 
 monitoring:
   enabled: false

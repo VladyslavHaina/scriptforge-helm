@@ -1,0 +1,25 @@
+{{- if .Values.execution.networkPolicy.enabled }}
+# Default-deny egress to cloud metadata endpoints for execution pods so a user
+# script cannot SSRF the instance metadata service for IAM credentials
+# (SF-SANDBOX-03). All other egress (incl. DNS + internet for scripts that are
+# granted network) is allowed. NOTE: only enforced by a NetworkPolicy-capable
+# CNI (Calico/Cilium); a no-op on CNIs that ignore policies (e.g. docker-desktop).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "scriptforge.fullname" . }}-exec-block-metadata
+  namespace: {{ .Values.execution.podNamespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: scriptforge-execution
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 169.254.169.254/32  # cloud instance metadata (GCP/Azure/AWS IMDS)
+              - 169.254.170.2/32     # AWS ECS task metadata
+{{- end }}
