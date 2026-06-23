@@ -15,6 +15,15 @@ spec:
         component: controller
     spec:
       serviceAccountName: {{ include "scriptforge.fullname" . }}-controller
+      {{- with .Values.execution.environmentBuilder }}
+      {{- if .dockerSocket }}
+      volumes:
+        - name: docker-socket
+          hostPath:
+            path: {{ .socketPath | default "/var/run/docker.sock" }}
+            type: Socket
+      {{- end }}
+      {{- end }}
       containers:
         - name: controller
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -28,3 +37,10 @@ spec:
             httpGet: { path: /healthz, port: 8080 }
           resources:
             {{- toYaml .Values.controller.resources | nindent 12 }}
+          {{- with .Values.execution.environmentBuilder }}
+          {{- if .dockerSocket }}
+          volumeMounts:
+            - name: docker-socket
+              mountPath: /var/run/docker.sock
+          {{- end }}
+          {{- end }}

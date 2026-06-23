@@ -61,6 +61,13 @@ execution:
   # Only enforced by a NetworkPolicy-capable CNI; harmless no-op otherwise.
   networkPolicy:
     enabled: true
+  # Dev-cluster "socket bridge": mount the host Docker socket into the controller so it can
+  # build self-service execution-environment images locally (Phase 2). SINGLE-NODE ONLY and a
+  # real privilege risk (a pod with the host docker socket ~= root on the host). Keep DISABLED
+  # outside local docker-desktop dev; multi-node should use a registry-backed builder instead.
+  environmentBuilder:
+    dockerSocket: false
+    socketPath: /var/run/docker.sock
 
 monitoring:
   enabled: false
