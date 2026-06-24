@@ -1,6 +1,6 @@
 image:
   repository: vladyslavhaina/scriptforge
-  tag: "2.9.0"
+  tag: "2.10.0"
   pullPolicy: IfNotPresent
 
 api:
