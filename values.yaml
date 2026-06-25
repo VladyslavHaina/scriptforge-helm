@@ -80,6 +80,19 @@ encryption:
 # Supply on upgrade: --set jwtSecret="$(openssl rand -hex 32)"
 jwtSecret: ""
 
+# Public, externally-reachable base URL of ScriptForge (no trailing slash). Used as the OAuth
+# return-origin allowlist and to build the GitHub callback URL. Required for "Connect with GitHub".
+# e.g. https://scriptforge.example.com
+publicBaseURL: ""
+
+# "Connect with GitHub" OAuth (Connections). The flow stays OFF until publicBaseURL above + both of
+# these are set. Register the GitHub OAuth App's "Authorization callback URL" as
+# <publicBaseURL>/api/v1/connections/github/callback. Supply the secret on upgrade:
+# --set githubOAuth.clientId=... --set githubOAuth.clientSecret=... --set publicBaseURL=...
+githubOAuth:
+  clientId: ""
+  clientSecret: ""
+
 autoscaling:
   enabled: false
   minReplicas: 1

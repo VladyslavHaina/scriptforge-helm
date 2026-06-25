@@ -9,3 +9,9 @@ data:
   SCRIPTFORGE_WORKER_SLOTS: "10"
   SCRIPTFORGE_LOG_RETENTION: "72h"
   SCRIPTFORGE_RUNTIME_IMAGES: "bash={{ .Values.runtimeImages.bash }},python={{ .Values.runtimeImages.python }},terraform={{ .Values.runtimeImages.terraform }},powershell={{ .Values.runtimeImages.powershell }},ansible={{ .Values.runtimeImages.ansible }}"
+  {{- if .Values.publicBaseURL }}
+  SCRIPTFORGE_PUBLIC_BASE_URL: {{ .Values.publicBaseURL | quote }}
+  {{- end }}
+  {{- if .Values.githubOAuth.clientId }}
+  SCRIPTFORGE_GITHUB_OAUTH_CLIENT_ID: {{ .Values.githubOAuth.clientId | quote }}
+  {{- end }}
