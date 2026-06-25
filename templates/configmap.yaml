@@ -12,6 +12,8 @@ data:
   {{- if .Values.publicBaseURL }}
   SCRIPTFORGE_PUBLIC_BASE_URL: {{ .Values.publicBaseURL | quote }}
   {{- end }}
-  {{- if .Values.githubOAuth.clientId }}
-  SCRIPTFORGE_GITHUB_OAUTH_CLIENT_ID: {{ .Values.githubOAuth.clientId | quote }}
+  {{- with .Values.githubOAuth }}
+  {{- if .clientId }}
+  SCRIPTFORGE_GITHUB_OAUTH_CLIENT_ID: {{ .clientId | quote }}
+  {{- end }}
   {{- end }}
