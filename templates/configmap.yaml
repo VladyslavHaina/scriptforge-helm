@@ -17,3 +17,11 @@ data:
   SCRIPTFORGE_GITHUB_OAUTH_CLIENT_ID: {{ .clientId | quote }}
   {{- end }}
   {{- end }}
+  {{- with .Values.oidc }}
+  {{- if .issuer }}
+  SCRIPTFORGE_OIDC_ISSUER: {{ .issuer | quote }}
+  {{- end }}
+  {{- if .clientId }}
+  SCRIPTFORGE_OIDC_CLIENT_ID: {{ .clientId | quote }}
+  {{- end }}
+  {{- end }}

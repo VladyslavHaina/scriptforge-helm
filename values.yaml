@@ -93,6 +93,15 @@ githubOAuth:
   clientId: ""
   clientSecret: ""
 
+# OIDC single sign-on (login). The "Sign in with SSO" button appears once issuer + clientId +
+# clientSecret + publicBaseURL (above) are all set. The IdP's redirect/callback URL must be
+# <publicBaseURL>/auth/oidc/callback. Supply the secret on upgrade:
+# --set oidc.issuer=... --set oidc.clientId=... --set oidc.clientSecret=...
+oidc:
+  issuer: ""
+  clientId: ""
+  clientSecret: ""
+
 autoscaling:
   enabled: false
   minReplicas: 1
